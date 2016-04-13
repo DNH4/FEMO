@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">FEMO</string>
+    <string name="start_button">Find EMO</string>
+    <string name="game_over">GAME OVER !</string>
+    <string name="score">SCORE: %1$s</string>
+    <string name="again_button">Again !</string>
+    <string name="preference_file_key">com.hoangndang.femo.PREFERENCE_FILE_KEY</string>
+    <string name="flag_vibration">com.hoangndang.femo.FLAG_VIBRATION</string>
+    <string name="flag_sound">com.hoangndang.femo.FLAG_SOUND</string>
+    <string name="flag_tutorial">com.hoangndang.femo.TUTORIAL</string>
+    <string name="sound_find_emo">scan_ping.wav</string>
+    <string name="sound_found_emo">found_EMO.wav</string>
+    <string name="sound_intro">intro_music.wav</string>
+    <string name="tutorial_text">Tap to find the emoji !</string>
+    <string name="sound_game_over">game_over2.wav</string>
+    <string name="game_over_laugh">game_over_laugh.wav</string>
+    <string name="profile_detail">Hi, this is Hoang. I\'m an engineer. Thanks for trying out this game of mine. Hope you enjoy it :). I would love to hear your opinion and suggestion.</string>
+    <string name="test_interstitial_ad_unit_id">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="interstitial_ad_unit_id">ca-app-pub-7069842736458121/9709867097</string>
+    <string name="high_score_text">HIGHSCORE: %1$s</string>
+    <string name="high_score_key">com.hoangndang.femo.HIGHSCORE</string>
+    <string name="sound_new_high_score">game_over.wav</string>
+</resources>
