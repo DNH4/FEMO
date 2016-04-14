@@ -1,6 +1,7 @@
 package com.hoangndang.femo;
 
 import android.animation.Animator;
+import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.app.ActivityOptions;
 import android.content.Context;
@@ -14,6 +15,7 @@ import android.os.Handler;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDialog;
 import android.transition.Explode;
@@ -141,24 +143,28 @@ public class FindingEmoActivity extends AppCompatActivity {
 
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         if(!vibrator.hasVibrator()){ //if device doesn't have vibrator
-            vibration_enable.setImageDrawable(getDrawable(R.drawable.vibration_disable));
+            //vibration_enable.setImageDrawable(getDrawable(R.drawable.vibration_disable)); // API 21
+            vibration_enable.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.vibration_disable));
             vibration_enable.setEnabled(false);
             mFlagVibration = false;
             editor.putBoolean(getString(R.string.flag_vibration), mFlagVibration);//update flag
             editor.apply();
         }else if(!mFlagVibration){
-            vibration_enable.setImageDrawable(getDrawable(R.drawable.vibration_disable));
+//            vibration_enable.setImageDrawable(getDrawable(R.drawable.vibration_disable));// API 21
+            vibration_enable.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.vibration_disable));
         }
 
         vibration_enable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(mFlagVibration){
-                    vibration_enable.setImageDrawable(getDrawable(R.drawable.vibration_disable));
+//                    vibration_enable.setImageDrawable(getDrawable(R.drawable.vibration_disable));// API 21
+                    vibration_enable.setImageDrawable(ContextCompat.getDrawable(FindingEmoActivity.this, R.drawable.vibration_disable));
                     mFlagVibration = false;
 
                 }else {
-                    vibration_enable.setImageDrawable(getDrawable(R.drawable.vibration_enable));
+//                    vibration_enable.setImageDrawable(getDrawable(R.drawable.vibration_enable));// API 21
+                    vibration_enable.setImageDrawable(ContextCompat.getDrawable(FindingEmoActivity.this, R.drawable.vibration_enable));
                     mFlagVibration = true;
                     //vibrate once
                     //Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
@@ -174,18 +180,21 @@ public class FindingEmoActivity extends AppCompatActivity {
 
         sound_enable = (ImageButton) findViewById(R.id.image_button_sound_enable);
         if(!mFlagSound){
-            sound_enable.setImageDrawable(getDrawable(R.drawable.sound_disable));
+//            sound_enable.setImageDrawable(getDrawable(R.drawable.sound_disable)); //API 21
+            sound_enable.setImageDrawable(ContextCompat.getDrawable(FindingEmoActivity.this, R.drawable.sound_disable));
         }
         sound_enable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(mFlagSound){
-                    sound_enable.setImageDrawable(getDrawable(R.drawable.sound_disable));
+//                    sound_enable.setImageDrawable(getDrawable(R.drawable.sound_disable));//API 21
+                    sound_enable.setImageDrawable(ContextCompat.getDrawable(FindingEmoActivity.this, R.drawable.sound_disable));
                     mFlagSound = false;
                     gameSound.mute(mFlagSound);
 
                 }else {
-                    sound_enable.setImageDrawable(getDrawable(R.drawable.sound_enable));
+//                    sound_enable.setImageDrawable(getDrawable(R.drawable.sound_enable));//API 21
+                    sound_enable.setImageDrawable(ContextCompat.getDrawable(FindingEmoActivity.this, R.drawable.sound_enable));
 
                     mFlagSound = true;
                     gameSound.mute(mFlagSound);
@@ -231,9 +240,11 @@ public class FindingEmoActivity extends AppCompatActivity {
 
 
         final ObjectAnimator objectAnimator = ObjectAnimator
-                .ofArgb(viewA, "backgroundColor", mCurrentColor, newColor)
+                //.ofArgb(viewA, "backgroundColor", mCurrentColor, newColor)
+                .ofInt(viewA, "backgroundColor", mCurrentColor, newColor)
                 .setDuration(700);
-        objectAnimator.setAutoCancel(true);//Auto canceled when any other ObjectAnimator with the same target and properties is started
+        objectAnimator.setEvaluator(new ArgbEvaluator());
+        //objectAnimator.setAutoCancel(true);//Auto canceled when any other ObjectAnimator with the same target and properties is started
         objectAnimator.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -298,14 +309,20 @@ public class FindingEmoActivity extends AppCompatActivity {
         //final Random random = new Random();
         int randomPos = mRandom.nextInt(2 * viewAWidth / 5) + (viewAWidth / 5 + mButtonSize / 2); //Margin is 1/5 + 1/5 = 2/5 width then move back Margin
 
+        // ***** API 21
         //Getting the path
-        path = new Path();
+/*        path = new Path();
         path.moveTo(currentPositionX, currentPositionY); //move to original position
         path.lineTo(randomPos, currentPositionY);
 
         final ObjectAnimator moveEMO = ObjectAnimator
                 .ofFloat(mFindingEMO, View.X, View.Y, path); // API 21
-                //.ofFloat(mFindingEMO, "x", (float)currentPositionX, (float)currentPositionY); // for API 16
+                //.ofFloat(mFindingEMO, "x", (float)currentPositionX, (float)currentPositionY); // for API 16*/
+
+        // **************
+        ObjectAnimator moveEMO = ObjectAnimator
+                .ofFloat(mFindingEMO, "x", (float) currentPositionX, (float)randomPos); // for API 16*/
+
         moveEMO.setDuration(2000);
         moveEMO.addListener(new Animator.AnimatorListener() {
             @Override

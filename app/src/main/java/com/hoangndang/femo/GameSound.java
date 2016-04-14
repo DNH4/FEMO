@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
 import android.media.AudioAttributes;
+import android.media.AudioManager;
 import android.media.SoundPool;
 import android.util.Log;
 
@@ -33,14 +34,16 @@ public class GameSound {
         mSoundPool = new SoundPool(MAX_SOUND, AudioManager.STREAM_MUSIC, 0);
 */
         // for API 21
-        AudioAttributes attributes = new AudioAttributes.Builder()
+/*        AudioAttributes attributes = new AudioAttributes.Builder()
                 .setUsage(AudioAttributes.USAGE_GAME)
                 .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
                 .build();
         mSoundPool = new SoundPool.Builder()
                 .setAudioAttributes(attributes)
                 .setMaxStreams(MAX_SOUND)
-                .build();
+                .build();*/
+
+        mSoundPool = new SoundPool(MAX_SOUND, AudioManager.STREAM_MUSIC,0);
         loadSounds();
     }
 

@@ -167,10 +167,10 @@ public class GameOverActivity extends AppCompatActivity {
         // ******** Animate all the FEMO found *******************************
         int xPos=0;
         int yPos=mHeight/4;
-        //******* Create Path
-        Path path = new Path();
+        //******* Create Path   API 21
+/*        Path path = new Path();
         path.moveTo(xPos, yPos); //move to original position
-        path.lineTo((int)(mWidth-(float)mWidth/2- mFEMOList.get(0).getButtonSize()/2),yPos);
+        path.lineTo((int)(mWidth-(float)mWidth/2- mFEMOList.get(0).getButtonSize()/2),yPos);*/
 
 
         //while(animateCount<mFEMOList.size()){
@@ -187,14 +187,17 @@ public class GameOverActivity extends AppCompatActivity {
             mFEMO = mFEMOList.get(animateCount);
 
             fab.setImageDrawable(ContextCompat.getDrawable(this, mFEMO.getFEMOFace()));
-            fab.setImageTintList(ColorStateList.valueOf(this.getResources().getColor(R.color.colorTextIcon)));
+            //fab.setImageTintList(ColorStateList.valueOf(this.getResources().getColor(R.color.colorTextIcon))); // API 21
+            fab.setColorFilter(getResources().getColor(R.color.colorTextIcon)); //!@#$
             fab.setBackgroundTintList(ColorStateList.valueOf(mFEMO.getColor()));
             mViewB.addView(fab);
             //fab.show();//do show animation
 
             //****** Create Animation
+/*            ObjectAnimator moveEMO = ObjectAnimator
+                    .ofFloat(fab, View.X, View.Y, path);*/ //API 21
             ObjectAnimator moveEMO = ObjectAnimator
-                    .ofFloat(fab, View.X, View.Y, path);
+                    .ofFloat(fab, "x",xPos,(mWidth-(float)mWidth/2- mFEMOList.get(0).getButtonSize()/2));
             moveEMO.setDuration(700)
                     .setInterpolator(new DecelerateInterpolator());
             //moveEMO.setStartDelay(100);

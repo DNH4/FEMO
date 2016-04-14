@@ -172,7 +172,7 @@ public class GameFragment extends Fragment {
 
         //Initialize Ads
         mInterstitialAd = new InterstitialAd(getActivity());
-        mInterstitialAd.setAdUnitId(getString(R.string.interstitial_ad_unit_id));
+        mInterstitialAd.setAdUnitId(getString(R.string.interstitial_ad_unit_id));// !@#$ change to test_interstitial_ad_unit_id for testing
         AdUtilities.requestNewInterstitial(mInterstitialAd);
         //**** Fin Initialize ******
 
@@ -323,8 +323,10 @@ public class GameFragment extends Fragment {
             tvLifeGain.setText(lifeGain);
 
             ObjectAnimator animationLifeGain = ObjectAnimator
-                    .ofArgb(tvLifeGain,"textColor",getResources().getColor(R.color.colorPrimary),getResources().getColor(R.color.colorTransparent))
+                    //.ofArgb(tvLifeGain,"textColor",getResources().getColor(R.color.colorPrimary),getResources().getColor(R.color.colorTransparent)) // API 21
+                    .ofInt(tvLifeGain, "textColor", getResources().getColor(R.color.colorPrimary), getResources().getColor(R.color.colorTransparent))
                     .setDuration(1000);
+            animationLifeGain.setEvaluator(new ArgbEvaluator());
             animationLifeGain.start();
 
 
@@ -393,7 +395,8 @@ public class GameFragment extends Fragment {
 
         //fab.setImageDrawable(getActivity().getDrawable(newFEMO.getFEMOFace()));
         fab.setImageDrawable(ContextCompat.getDrawable(getActivity(), newFEMO.getFEMOFace()));
-        fab.setImageTintList(ColorStateList.valueOf(getActivity().getResources().getColor(R.color.colorTextIcon)));
+        //fab.setImageTintList(ColorStateList.valueOf(getActivity().getResources().getColor(R.color.colorTextIcon))); //API 21
+        fab.setColorFilter(getActivity().getResources().getColor(R.color.colorTextIcon)); //!@#$
         fab.setBackgroundTintList(ColorStateList.valueOf(newFEMO.getColor()));
         //fab.setImageTintList(ColorStateList.valueOf(mCurrentColor));
 
@@ -429,15 +432,25 @@ public class GameFragment extends Fragment {
         }
 
         //Move the button up
-        //** create Path **
-        Path path = createPath();
-            /*path.moveTo(FEMO.get(FEMO.size()-1).getX(),FEMO.get(FEMO.size()-1).getY());
-            path.lineTo(500, 500);//test*/
+        //** create Path **** API 21
+/*        Path path = createPath();
+            *//*path.moveTo(FEMO.get(FEMO.size()-1).getX(),FEMO.get(FEMO.size()-1).getY());
+            path.lineTo(500, 500);//test*//*
         ObjectAnimator moveEMO = ObjectAnimator
-                .ofFloat(currentEMO, View.X, View.Y, path);
-        moveEMO.setDuration(700)
+                .ofFloat(currentEMO, View.X, View.Y, path);*/
+        // API 21
+
+        //Lower API:
+        float newX = mBackground.getWidth() / 2 - mButtonSize / 2;
+        float newY = mButtonSize / 6;
+        ObjectAnimator moveEMOX = ObjectAnimator
+                .ofFloat(currentEMO,"x",(float)mEMOPosX,newX);
+        moveEMOX.setDuration(700)
                 .setInterpolator(new AccelerateDecelerateInterpolator());
-        //moveEMO.start();
+        ObjectAnimator moveEMOY = ObjectAnimator
+                .ofFloat(currentEMO,"y",(float)mEMOPosY,newY);
+        moveEMOY.setDuration(700)
+                .setInterpolator(new AccelerateDecelerateInterpolator());
 
         //Transition the screen
         int tempCurrentColor = mCurrentColor;
@@ -450,7 +463,8 @@ public class GameFragment extends Fragment {
 
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet
-                .play(moveEMO)
+                .play(moveEMOX)
+                .with(moveEMOY)
                 .before(changeBackground);
         animatorSet.start();
 
