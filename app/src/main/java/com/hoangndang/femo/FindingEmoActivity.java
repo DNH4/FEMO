@@ -140,6 +140,10 @@ public class FindingEmoActivity extends AppCompatActivity {
 
         //*** Set up up Pref. buttons ***//
         vibration_enable = (ImageButton) findViewById(R.id.image_button_vibration_enable);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            vibration_enable.setColorFilter(getResources().getColor(R.color.colorTextIcon));
+        }
+
 
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         if(!vibrator.hasVibrator()){ //if device doesn't have vibrator
@@ -179,6 +183,10 @@ public class FindingEmoActivity extends AppCompatActivity {
         });
 
         sound_enable = (ImageButton) findViewById(R.id.image_button_sound_enable);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            sound_enable.setColorFilter(getResources().getColor(R.color.colorTextIcon)); // for API 16 compatibility
+        }
+
         if(!mFlagSound){
 //            sound_enable.setImageDrawable(getDrawable(R.drawable.sound_disable)); //API 21
             sound_enable.setImageDrawable(ContextCompat.getDrawable(FindingEmoActivity.this, R.drawable.sound_disable));

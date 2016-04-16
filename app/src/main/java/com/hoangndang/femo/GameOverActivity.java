@@ -100,7 +100,7 @@ public class GameOverActivity extends AppCompatActivity {
 
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         mHighscore = sharedPref.getInt(getString(R.string.high_score_key), 0);
-        boolean isSound = sharedPref.getBoolean(getString(R.string.flag_sound), false);
+        boolean isSound = sharedPref.getBoolean(getString(R.string.flag_sound), true);
         gameSound.mute(isSound);
 
         // Run runnable

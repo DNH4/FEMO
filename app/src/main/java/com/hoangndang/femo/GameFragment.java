@@ -57,6 +57,7 @@ public class GameFragment extends Fragment {
     private int mTouchPosX;
     private int mTouchPosY;
     private int mButtonSize;
+    private int mTolerance;
     private int mCurrentColor;
     private int mHeight;
     private int mWidth;
@@ -162,8 +163,8 @@ public class GameFragment extends Fragment {
 
         //Getting Preference
         sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        mFlagVibration = sharedPref.getBoolean(getString(R.string.flag_vibration), false);//default is true
-        mFlagSound = sharedPref.getBoolean(getString(R.string.flag_sound),false);
+        mFlagVibration = sharedPref.getBoolean(getString(R.string.flag_vibration), true);//default is true
+        mFlagSound = sharedPref.getBoolean(getString(R.string.flag_sound),true);
 
         //Link sound
         mGameSound = new GameSound(getActivity());
@@ -193,6 +194,7 @@ public class GameFragment extends Fragment {
         // converting button size to pixel
         DisplayMetrics metrics = getResources().getDisplayMetrics();
         mButtonSize = (int) (metrics.density * BUTTON_SIZE + 0.5f);
+        mTolerance = (int) (metrics.density * 0f +0.5f);
 
         //set Vibrator
         mVibrator = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
@@ -308,9 +310,9 @@ public class GameFragment extends Fragment {
         boolean check;//!@#$ test
         check = isFound(mTouchPosX,mTouchPosY); // check if click is found
         //Check if found FEMO
-/*        Log.i(TAG,"Touch X =  " + mTouchPosX + "Touch Y = " + mTouchPosY);
+        Log.i(TAG,"Touch X =  " + mTouchPosX + "Touch Y = " + mTouchPosY);
         Log.i(TAG, "Pos X =  " + mEMOPosX + "Pos Y = "+ mEMOPosY);
-        Log.i(TAG,"isFound()= "+check);*/
+        Log.i(TAG,"isFound()= "+check);
 
 
         //If Found the button
@@ -390,7 +392,7 @@ public class GameFragment extends Fragment {
         mEMOPosY = newFEMO.getYpos();
 
         fab.setLayoutParams(params);
-        fab.setVisibility(View.INVISIBLE);
+        fab.setVisibility(View.GONE);
         mBackground.addView(fab);
 
         //fab.setImageDrawable(getActivity().getDrawable(newFEMO.getFEMOFace()));
@@ -410,8 +412,12 @@ public class GameFragment extends Fragment {
     }
 
     private boolean isFound(int xPos, int yPos){
-        int tolerance = 100;
-        int trueRange = mButtonSize - tolerance;
+        //int tolerance = 100;
+        int trueRange = mButtonSize;
+        Log.i(TAG,"trueRange  " + trueRange);
+        Log.i(TAG,"clickX+ " + (mEMOPosX +trueRange) + "clickX- " + (mEMOPosX -trueRange));
+        Log.i(TAG,"clickY+ " + (mEMOPosY +trueRange) + "clickY- " + (mEMOPosY -trueRange));
+
         if((((mEMOPosX +trueRange) > xPos) && (xPos > (mEMOPosX -trueRange))) &&
                 (((mEMOPosY +trueRange) > yPos) && (yPos > (mEMOPosY -trueRange)))){//found FEMO
             currentEMO.setVisibility(View.VISIBLE);
